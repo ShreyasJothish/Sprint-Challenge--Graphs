@@ -194,47 +194,53 @@ roomGraph = {494: [(1, 8), {'e': 457}], 492: [(1, 20), {'e': 400}], 493: [(2, 5)
 
 world.loadGraph(roomGraph)
 world.printRooms()
-player = Player("Name", world.startingRoom)
+least_traversal = float('inf')
 
+for i in range(1):
+    player = Player("Name", world.startingRoom)
 
-# FILL THIS IN
-traversalPath = []
+    # FILL THIS IN
+    traversalPath = []
 
-# player.currentRoom.id
-# player.currentRoom.getExits()
-# player.travel(direction)
+    # Holds the mapping of room and its exits
+    visited = {}
 
-# Holds the mapping of room and its exits
-visited = {}
+    while True:
+        # Find random available directions to traversal '?'
+        # Step in that direction.
+        # Forward movement in depth first traversal (dft)
+        godeep(player, visited, traversalPath)
 
-while True:
-    godeep(player, visited, traversalPath)
+        # Once you reach the deadend, find for nearest node with '?'
+        # Repeat the dft.
+        # For finding the nearest node with '?' use breadth first search.
+        if not searchnext(player, visited, traversalPath):
+            break
 
-    if not searchnext(player, visited, traversalPath):
-        break
-
-# Find random available directions to traversal '?' and step in that direction.
-# Forward movement in depth first traversal (dft)
-
-# Once you reach the deadend, find for nearest node with '?' and repeat the
-# dft. For finding the nearest node with '?' use breadth first search.
-
-
-# TRAVERSAL TEST
-visited_rooms = set()
-player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
-for move in traversalPath:
-    player.travel(move)
+    # TRAVERSAL TEST
+    visited_rooms = set()
+    player.currentRoom = world.startingRoom
     visited_rooms.add(player.currentRoom)
+    for move in traversalPath:
+        player.travel(move)
+        visited_rooms.add(player.currentRoom)
 
-if len(visited_rooms) == len(roomGraph):
-    print(f"TESTS PASSED: {len(traversalPath)} moves, "  # noqa: E999
-          f"{len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
+    """
+    if len(visited_rooms) == len(roomGraph):
+        print(f"TESTS PASSED: {len(traversalPath)} moves, "  # noqa: E999
+              f"{len(visited_rooms)} rooms visited")
+    else:
+        print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+        print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
+    """
+    if len(visited_rooms) == len(roomGraph):
+        if len(traversalPath) < least_traversal:
+            least_traversal = len(traversalPath)
+            print(f'{i}th iteration {least_traversal} so far')  # noqa: E999
+            print(traversalPath)
 
+print(f"TESTS PASSED: least traversal {least_traversal} moves,"  # noqa: E999
+      f"{len(visited_rooms)} rooms visited")
 
 #######
 # UNCOMMENT TO WALK AROUND
