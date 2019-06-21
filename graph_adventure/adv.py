@@ -154,9 +154,7 @@ def searchnext(player, visited, traversalPath):
 
             # Find neighbouring roomids and add it to path
             room_directions = visited[roomid]
-            # print(f'Room ID: {roomid}')
             for direction, next_roomid in room_directions.items():
-                # print(direction, next_roomid)
                 next_path = path.copy()
                 next_path.append(next_roomid)
                 queue.enqueue(next_path)
@@ -164,17 +162,13 @@ def searchnext(player, visited, traversalPath):
     # Could not find room with untraversed path/direction
     if not search_path:
         return False
-    # print(search_path)
-    # print(player.currentRoom.id)
 
     # Traverse player across search path to reach room with untraversed
     # path/direction
     for index, roomid in enumerate(search_path[:-1]):
-        # print(f'Room ID: {roomid}')
         # Find roomid in visited and get the direction to reach next room
         directions = visited[roomid]
         for direction in directions:
-            # print(visited[roomid][direction])
             if visited[roomid][direction] == search_path[index+1]:
                 # Update traversal path
                 traversalPath.append(direction)
@@ -211,7 +205,6 @@ visited = {}
 
 while True:
     godeep(player, visited, traversalPath)
-    # print(traversalPath)
 
     if not searchnext(player, visited, traversalPath):
         break
