@@ -94,7 +94,11 @@ def godeep(player, visited, traversalPath):
 
             # Find neighbouring room which is not visited
             room_directions = visited[room.id]
-            for direction, value in room_directions.items():
+            room_directions = list(room_directions.items())
+
+            while len(room_directions) > 0:
+                random.shuffle(room_directions)
+                direction, value = room_directions.pop()
                 if value == '?':
                     # Move player in this direction
                     # and update the traversalPath
